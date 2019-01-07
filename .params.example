@@ -1,0 +1,25 @@
+{
+    "enedis":
+    {
+        "username": 	  "",
+        "password": 	  ""
+    },
+    "influx":
+    {
+        "host": 	      "",
+        "port": 	      8086,
+        "db": 		      "",
+        "username":     "",
+        "password":     "",
+        "ssl":		      true,
+        "verify_ssl": 	true
+    },
+    "hc":
+    [{
+        "start":   { "h": 1, "m": 0 },
+        "end":     { "h": 7, "m": 0 }
+     },{
+        "start":   { "h": 12, "m": 30 },
+        "end":     { "h": 14, "m": 30 }
+    }]
+}
