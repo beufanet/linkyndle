@@ -45,12 +45,12 @@ def _getStartDate(today, daysNumber):
 # Get the midnight timestamp fro startDate
 def _getStartTS(daysNumber):
     date = (datetime.datetime.now().replace(hour=0,minute=0,second=0,microsecond=0) - relativedelta(days=daysNumber))
-    return date.timestamp()
+    return date.astimezone(tz.tzutc()).timestamp()
 
 # Get the timestamp for calculating if we are in HP / HC
 def _getDateTS(y,mo,d,h,m):
     date = (datetime.datetime(year=y,month=mo,day=d,hour=h,minute=m,second=1,microsecond=0))
-    return date.timestamp()
+    return date.astimezone(tz.tzutc()).timestamp()
 
 
 # Let's start here !
