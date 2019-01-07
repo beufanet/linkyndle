@@ -4,6 +4,10 @@
 
 The excellent job done by [outadoc](https://github.com/outadoc/) on project [linkindle available on Github](https://github.com/outadoc/linkindle). I used the linky module to avoid re-do the great job done.
 
+## Grafana example
+
+![Grafana Dashboard](https://raw.githubusercontent.com/beufanet/linkyndle/master/grafana.png)
+
 ## Requirements
 
 ## Python3 and libs
