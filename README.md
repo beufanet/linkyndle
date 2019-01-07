@@ -6,12 +6,15 @@ The excellent job done by [outadoc](https://github.com/outadoc/) on project [lin
 
 ## Requirements
 
+## Python3 and libs
+
 - `python3` and following dependencies
   - `os`
   - `sys`
   - `datetime`
   - `locale`
   - `relativedelta` (from `dateutil.relativedelta`)
+  - `tz` (from `dateutil`)
   - `InfluxDBClient` (from `influxdb`)
   - `linky` (see Externals above)
   - `json`

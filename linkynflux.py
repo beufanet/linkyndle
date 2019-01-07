@@ -6,6 +6,7 @@ import sys
 import datetime
 import locale
 from dateutil.relativedelta import relativedelta
+from dateutil import tz
 from influxdb import InfluxDBClient
 import linky
 import json
@@ -106,7 +107,7 @@ if __name__ == "__main__":
     jsonInflux = []
     for d in resEnedis['graphe']['data']:
         # Use the formula to create timestamp, 1 ordre = 30min
-            tres = firstTS + ((d['ordre'] - 1) *30*60)
+            tres = firstTS + ((d['ordre']-1) *30*60)
             t = datetime.datetime.fromtimestamp(tres)
             creuses = 0
             for hc in params['hc']:
@@ -116,14 +117,14 @@ if __name__ == "__main__":
                     logging.debug("Found HC, set flag for DT : ", t.strftime('%Y-%m-%dT%H:%M:%SZ'))
                     creuses = 1
             # Warning if ordre = 30min, then kWh should be divided by 2 !
-            logging.info(("found value ordre({0:3d}) : {1:7.2f} kWh at {2} (HC:{3})").format(d['ordre'], (d['valeur']/2), t.strftime('%Y-%m-%dT%H:%M:%SZ'),creuses))
+            logging.info(("found value ordre({0:3d}) : {1:7.2f} kWh at {2} (HC:{3})").format(d['ordre'], (d['valeur']/2), t.astimezone(tz.tzutc()).strftime('%Y-%m-%dT%H:%M:%SZ'),creuses))
             jsonInflux.append({
                            "measurement": "conso_elec",
                            "tags": {
                                "fetch_date" : endDate,
                                "heures_creuses" : creuses,
                            },
-                           "time": t.strftime('%Y-%m-%dT%H:%M:%SZ'),
+                           "time": t.astimezone(tz.tzutc()).strftime('%Y-%m-%dT%H:%M:%SZ'),
                            "fields": {
                                "value": (d['valeur']*1000)/2,
                                "max": resEnedis['graphe']['puissanceSouscrite']*1000,
@@ -136,3 +137,4 @@ if __name__ == "__main__":
         logging.info("unable to write data points to influxdb")
     else:
         logging.info("done")
+
