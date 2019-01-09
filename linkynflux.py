@@ -103,6 +103,10 @@ if __name__ == "__main__":
         logging.error("unable to get data from enedis")
         sys.exit(1)
 
+    if resEnedis['etat']['valeur'] == 'nonActive':
+        logging.error("Data from enedis are in state 'nonActive'. So graphe will be empty, no value to push")
+        sys.exit(1)
+
     # When we have all values let's start parse data and pushing it
     jsonInflux = []
     for d in resEnedis['graphe']['data']:
