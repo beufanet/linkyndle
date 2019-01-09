@@ -110,12 +110,20 @@ Copy .params.example to .params and fill with your own values :
 
 ### Grafana
 
+Please verify first you have `grafana-piechart-panel` installed
+
+```
+# grafana-cli plugins install grafana-piechart-panel
+# systemctl restart grafana-server
+```
+
 Replace DS_YOUR_LINKYDB with our own database source in Grafana dashboard `grafana.dashboard.json` and then import it
 
 Change variables prices for (sorry only in french :D)
 - VAR_STD_KWH : "Tarif en € par kWh pour Heures pleines avec contrat option base"
 - VAR_HP_KWH : "Tarif en € par kWh pour Heures pleines avec contrat heures pleines/creuses"
 - VAR_HC_KWH : "Tarif en € par kWh pour Heures creuses avec contrat heures pleines/creuses"
+
 
 ### Script usage
 
