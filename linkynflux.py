@@ -114,19 +114,28 @@ if __name__ == "__main__":
             tres = firstTS + ((d['ordre']-1) *30*60)
             t = datetime.datetime.fromtimestamp(tres)
             creuses = 0
-            for hc in params['hc']:
-                startTS = _getDateTS(t.year,t.month,t.day,hc['start']['h'],hc['start']['m'])
-                endTS =   _getDateTS(t.year,t.month,t.day,hc['end']['h'],hc['end']['m'])
-                if (startTS <= tres) and (endTS >= tres):
-                    logging.debug("Found HC, set flag for DT : ", t.strftime('%Y-%m-%dT%H:%M:%SZ'))
-                    creuses = 1
-            # Warning if ordre = 30min, then kWh should be divided by 2 !
-            logging.info(("found value ordre({0:3d}) : {1:7.2f} kWh at {2} (HC:{3})").format(d['ordre'], (d['valeur']/2), t.astimezone(tz.tzutc()).strftime('%Y-%m-%dT%H:%M:%SZ'),creuses))
+            pleines = 0
+            normales = 0
+            if len(params['hc']) == 0:
+                normales = 1
+            else:
+                for hc in params['hc']:
+                    startTS = _getDateTS(t.year,t.month,t.day,hc['start']['h'],hc['start']['m'])
+                    endTS =   _getDateTS(t.year,t.month,t.day,hc['end']['h'],hc['end']['m'])
+                    if (startTS <= tres) and (endTS >= tres):
+                        logging.debug("Found HC, set flag for DT : ", t.strftime('%Y-%m-%dT%H:%M:%SZ'))
+                        creuses = 1
+                    else:
+                        pleines = 1
+                # Warning if ordre = 30min, then kWh should be divided by 2 !
+            logging.info(("found value ordre({0:3d}) : {1:7.2f} kWh at {2} (HC:{3}/HP:{4}/HN:{5})").format(d['ordre'], (d['valeur']/2), t.astimezone(tz.tzutc()).strftime('%Y-%m-%dT%H:%M:%SZ'),creuses,pleines,normales))
             jsonInflux.append({
                            "measurement": "conso_elec",
                            "tags": {
                                "fetch_date" : endDate,
                                "heures_creuses" : creuses,
+                               "heures_pleines" : pleines,
+                               "heures_normales" : normales,
                            },
                            "time": t.astimezone(tz.tzutc()).strftime('%Y-%m-%dT%H:%M:%SZ'),
                            "fields": {
