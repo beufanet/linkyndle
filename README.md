@@ -24,7 +24,7 @@ The excellent job done by [outadoc](https://github.com/outadoc/) on project [lin
   - `json`
   - `argparse`
   - `logging`
-  - `pprint` (not mandatory)
+  - `pprint` (not mandatory, just for debugging)
 
 If you want to debug, please set level=logging.INFO to level=logging.DEBUG
 
@@ -58,13 +58,15 @@ Example : 5 years (1825d)
 {
   "measurement": "conso_elec",
     "tags": {
-      "fetch_date" : /DATE WHEN VALUE WHERE FETCH FROM API ENEDIS/,
-      "heures_creuses" : /1 IF ORDRE IS WHEN WE ARE IN "HEURES CREUSES", 0 IF NOT/,
+      "fetch_date" :        /DATE WHEN VALUE WHERE FETCH FROM API ENEDIS/,
+      "heures_creuses" :    /1 IF ORDRE IS WHEN WE ARE IN "HEURES CREUSES", 0 IF NOT/,
+      "heures_pleines" :    /1 IF ORDRE IS WHEN WE ARE IN "HEURES PLEINES", 0 IF NOT/,
+      "heures_normales" :   /1 IF ORDRE IS WHEN WE ARE IN "HEURES NORMALES", 0 IF NOT/,
     },
     "time": '%Y-%m-%dT%H:%M:%SZ',
     "fields": {
-      "value": /VALUE IN WH (SO x1000) AND DIVIDED BY 2 (ORDRE = 30min),
-      "max": /"PUISSANCE SOUSCRITE" RETURN BY ENEDIS in WH)/,
+      "value":    /VALUE IN Wh (SO x1000) AND DIVIDED BY 2 (ORDRE = 30min),
+      "max":     /"PUISSANCE SOUSCRITE" RETURN BY ENEDIS in WH)/,
     }
 }
 ```
@@ -77,7 +79,9 @@ Copy .params.example to .params and fill with your own values :
 
 - `enedis` : username and password for API Enedis
 - `influx` : your InfluxDB database
-- `hc` : if you have "heures creuses/heures pleines", fill start & end hours, so values will be tag with hc = 1 during this timewindow on InfluxDB datapoints
+- `hc` :
+  - if you have "heures creuses/heures pleines", fill start & end hours, so values will be tag with hc = 1 during this timewindow on InfluxDB datapoints
+  - leave empty as `[]` if you don't have 'heures creuses' / 'heures pleines'
 
 ```
 {
@@ -155,5 +159,5 @@ When it works, just put in a crontab to fetch last day (d=1) value (change `$USE
 
 ```
 # cat /etc/crontab | grep linky
-00 6    * * *   $USER    cd /opt/scripts/linky &&  python3 linkynflux.py -d 1
+00 6    * * *   $USER    cd /hime/$USER//linkyndle &&  python3 linkynflux.py -d 1
 ```
