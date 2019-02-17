@@ -84,7 +84,7 @@ if __name__ == "__main__":
         token = linky.login(params['enedis']['username'], params['enedis']['password'])
         logging.info("logged in successfully!")
     except linky.LinkyLoginException as exc:
-        logging.error("unable to login on %s : %s", linky.API_BASE_URI, e)
+        logging.error("unable to login on %s : %s", linky.API_BASE_URI, exc)
         sys.exit(1)
 
     # Calculate start/endDate and firstTS for data to request/parse
