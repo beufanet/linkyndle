@@ -24,6 +24,7 @@ The excellent job done by [outadoc](https://github.com/outadoc/) on project [lin
   - `json`
   - `argparse`
   - `logging`
+  - `fake_useragent`
   - `pprint` (not mandatory, just for debugging)
 
 If you want to debug, please set level=logging.INFO to level=logging.DEBUG
@@ -128,6 +129,7 @@ Change variables prices for (sorry only in french :D)
 - VAR_HP_KWH : "Tarif en € par kWh pour Heures pleines avec contrat heures pleines/creuses"
 - VAR_HC_KWH : "Tarif en € par kWh pour Heures creuses avec contrat heures pleines/creuses"
 
+If you don't have a `contrat heures pleines/creuses` you can use `grafana.dashboard-simple.json`
 
 ### Script usage
 

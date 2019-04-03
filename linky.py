@@ -21,6 +21,7 @@
 import base64
 import requests
 import html
+from fake_useragent import UserAgent
 
 LOGIN_BASE_URI = 'https://espace-client-connexion.enedis.fr'
 API_BASE_URI = 'https://espace-client-particuliers.enedis.fr/group/espace-particuliers'
@@ -47,7 +48,7 @@ def login(username, password):
     """Logs the user into the Linky API.
     """
     session = requests.Session()
-
+    session.headers.update({'User-agent': str(UserAgent().random)})
     payload = {'IDToken1': username,
                'IDToken2': password,
                'SunQueryParamsString': base64.b64encode(b'realm=particuliers'),
@@ -113,9 +114,8 @@ def _get_data(session, resource_id, start_date=None, end_date=None):
     if req.status_code == 200 and req.text is not None and "Conditions d'utilisation" in req.text:
         raise LinkyLoginException("You need to accept the latest Terms of Use. Please manually log into the website, "
                                   "then come back.")
-
+    
     res = req.json()
-
     if res['etat'] and res['etat']['valeur'] == 'erreur' and res['etat']['erreurText']:
         raise LinkyServiceException(html.unescape(res['etat']['erreurText']))
 
