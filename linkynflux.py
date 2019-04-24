@@ -42,7 +42,7 @@ def _openParams(pfile):
 def _getStartDate(today, daysNumber):
     return _dayToStr(today - relativedelta(days=daysNumber))
 
-# Get the midnight timestamp fro startDate
+# Get the midnight timestamp for startDate
 def _getStartTS(daysNumber):
     date = (datetime.datetime.now().replace(hour=0,minute=0,second=0,microsecond=0) - relativedelta(days=daysNumber))
     return date.astimezone(tz.tzutc()).timestamp()
@@ -52,6 +52,15 @@ def _getDateTS(y,mo,d,h,m):
     date = (datetime.datetime(year=y,month=mo,day=d,hour=h,minute=m,second=1,microsecond=0))
     return date.astimezone(tz.tzutc()).timestamp()
 
+# Get startDate with influxDB lastdate +1
+def _getStartDateInfluxDb(client):
+    #client = InfluxDBClient(host='localhost', port=8086, username=_db_user , password=_db_passwd )
+    #client.switch_database(_db_name)
+    db = client.query('SELECT "value" FROM "conso_elec" ORDER by time DESC LIMIT 1')
+    for item in db.get_points():
+        dateinfluxdb = item['time']
+    db_date = datetime.datetime.strptime(dateinfluxdb,'%Y-%m-%dT%H:%M:%SZ')
+    return _dayToStr(db_date)
 
 # Let's start here !
 
@@ -59,6 +68,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument("-d",  "--days",    type=int, help="Number of days from now to download", default=1)
+    parser.add_argument("-l",  "--last",    action="store_true", help="Check from InfluxDb the number of missing days", default=False)
     parser.add_argument("-v",  "--verbose", action="store_true", help="More verbose", default=False)
     args = parser.parse_args()
 
@@ -88,9 +98,14 @@ if __name__ == "__main__":
         sys.exit(1)
 
     # Calculate start/endDate and firstTS for data to request/parse
-    startDate = _getStartDate(datetime.date.today(), args.days)
+    if args.last:
+        startDate = _getStartDateInfluxDb(client)
+        firstTS =  datetime.datetime.strptime(startDate, '%d/%m/%Y').astimezone(tz.tzutc()).timestamp()
+    else :
+        startDate = _getStartDate(datetime.date.today(), args.days)
+        firstTS =  _getStartTS(args.days)
+
     endDate = _dayToStr(datetime.date.today())
-    firstTS =  _getStartTS(args.days)
 
     # Try to get data from Enedis API
     try:
@@ -150,4 +165,3 @@ if __name__ == "__main__":
         logging.info("unable to write data points to influxdb")
     else:
         logging.info("done")
-
