@@ -1232,6 +1232,96 @@
       "transform": "timeseries_to_columns",
       "transparent": true,
       "type": "table"
+    },
+   {
+      "columns": [],
+      "datasource": "${DS_YOUR_LINKYDB}",
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 16,
+        "w": 5,
+        "x": 19,
+        "y": 25
+      },
+      "id": 16,
+      "links": [],
+      "pageSize": null,
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 0,
+        "desc": false
+      },
+      "styles": [
+        {
+          "alias": "Time",
+          "dateFormat": "YYYY-MM-DD",
+          "link": false,
+          "pattern": "Time",
+          "type": "date"
+        },
+        {
+          "alias": "",
+          "colorMode": "value",
+          "colors": [
+            "rgba(50, 172, 45, 0.97)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(245, 54, 54, 0.9)"
+          ],
+          "decimals": 1,
+          "link": false,
+          "pattern": "/.*/",
+          "thresholds": [
+            "20000",
+            "30000"
+          ],
+          "type": "number",
+          "unit": "watth"
+        }
+      ],
+      "targets": [
+        {
+          "alias": "Power Consumption",
+          "groupBy": [
+            {
+              "params": [
+                "1d"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "conso_elec",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "Power Consumption Values per day",
+      "transform": "timeseries_to_columns",
+      "transparent": true,
+      "type": "table"
     }
   ],
   "refresh": "1d",
