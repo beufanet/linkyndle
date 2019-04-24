@@ -23,8 +23,18 @@ def _dayToStr(date):
 
 # Open file with params for influxdb, enedis API and HC/HP time window
 def _openParams(pfile):
+    # Try to load .params then programs_dir/.params
+    if os.path.isfile(os.getcwd() + pfile):
+        p = os.getcwd() + pfile
+    elif os.path.isfile(os.path.dirname(os.path.realpath(__file__)) + pfile):
+        p = os.path.dirname(os.path.realpath(__file__)) + pfile
+    else:
+        if (os.getcwd() + pfile != os.path.dirname(os.path.realpath(__file__)) + pfile):
+            logging.error('file %s or %s not exist', os.path.realpath(os.getcwd() + pfile) , os.path.dirname(os.path.realpath(__file__)) + pfile)
+        else:
+            logging.error('file %s not exist', os.getcwd() + pfile )
+        sys.exit(1)
     try:
-        p = os.getcwd()+pfile
         f = open(p, 'r')
         try:
             array = json.load(f)
