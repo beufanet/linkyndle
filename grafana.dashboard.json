@@ -1436,8 +1436,8 @@
     ]
   },
   "time": {
-    "from": "now-8d",
-    "to": "now-1d"
+    "from": "now-8d/d",
+    "to": "now-1d/d"
   },
   "timepicker": {
     "refresh_intervals": [
