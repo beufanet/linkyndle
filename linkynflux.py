@@ -7,6 +7,7 @@ import datetime
 import locale
 from dateutil.relativedelta import relativedelta
 from dateutil import tz
+from dateutil.utils import default_tzinfo
 from influxdb import InfluxDBClient
 import linky
 import json
@@ -55,6 +56,7 @@ def _getStartDate(today, daysNumber):
 # Get the midnight timestamp for startDate
 def _getStartTS(daysNumber):
     date = (datetime.datetime.now().replace(hour=0,minute=0,second=0,microsecond=0) - relativedelta(days=daysNumber))
+    date = default_tzinfo(date, tz.tzlocal())
     return date.astimezone(tz.tzutc()).timestamp()
 
 # Get the timestamp for calculating if we are in HP / HC
@@ -138,6 +140,7 @@ if __name__ == "__main__":
         # Use the formula to create timestamp, 1 ordre = 30min
             tres = firstTS + ((d['ordre']-1) *30*60)
             t = datetime.datetime.fromtimestamp(tres)
+            t = default_tzinfo(t, tz.tzlocal()) 
             creuses = 0
             pleines = 0
             normales = 0
