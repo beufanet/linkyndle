@@ -62,6 +62,7 @@ def _getStartTS(daysNumber):
 # Get the timestamp for calculating if we are in HP / HC
 def _getDateTS(y,mo,d,h,m):
     date = (datetime.datetime(year=y,month=mo,day=d,hour=h,minute=m,second=1,microsecond=0))
+    date = default_tzinfo(date, tz.tzlocal())
     return date.astimezone(tz.tzutc()).timestamp()
 
 # Get startDate with influxDB lastdate +1
