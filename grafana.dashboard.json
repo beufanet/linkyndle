@@ -1234,54 +1234,54 @@
       "type": "table"
     },
    {
-      "columns": [],
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
       "datasource": "${DS_YOUR_LINKYDB}",
-      "fontSize": "100%",
+      "decimals": 1,
+      "fill": 1,
       "gridPos": {
         "h": 16,
-        "w": 5,
-        "x": 19,
+        "w": 19,
+        "x": 0,
         "y": 25
       },
-      "id": 16,
-      "links": [],
-      "pageSize": null,
-      "scroll": true,
-      "showHeader": true,
-      "sort": {
-        "col": 0,
-        "desc": false
+      "id": 17,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "max": true,
+        "min": true,
+        "show": true,
+        "total": true,
+        "values": true
       },
-      "styles": [
+      "lines": false,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "paceLength": 10,
+      "percentage": false,
+      "pointradius": 3,
+      "points": true,
+      "renderer": "flot",
+      "seriesOverrides": [
         {
-          "alias": "Time",
-          "dateFormat": "YYYY-MM-DD",
-          "link": false,
-          "pattern": "Time",
-          "type": "date"
-        },
-        {
-          "alias": "",
-          "colorMode": "value",
-          "colors": [
-            "rgba(50, 172, 45, 0.97)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(245, 54, 54, 0.9)"
-          ],
-          "decimals": 1,
-          "link": false,
-          "pattern": "/.*/",
-          "thresholds": [
-            "20000",
-            "30000"
-          ],
-          "type": "number",
-          "unit": "watth"
+          "alias": "Watt/Day",
+          "color": "#508642",
+          "dashLength": 20,
+          "dashes": true,
+          "pointradius": 4
         }
       ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": true,
       "targets": [
         {
-          "alias": "Power Consumption",
+          "alias": "Watt/Day",
           "groupBy": [
             {
               "params": [
@@ -1299,6 +1299,8 @@
           "measurement": "conso_elec",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "SELECT sum(\"value\") FROM \"conso_elec\" WHERE $timeFilter GROUP BY time(1d) fill(null) tz('Europe/Paris')",
+          "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -1318,10 +1320,57 @@
           "tags": []
         }
       ],
-      "title": "Power Consumption Values per day",
-      "transform": "timeseries_to_columns",
+      "thresholds": [
+        {
+          "colorMode": "critical",
+          "fill": true,
+          "line": false,
+          "op": "gt",
+          "value": 30000,
+          "yaxis": "right"
+        }
+      ],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Electricity Consumption - per Day (k)Wh",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
       "transparent": true,
-      "type": "table"
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": null,
+          "format": "watth",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     }
   ],
   "refresh": "1d",
@@ -1420,3 +1469,4 @@
   "uid": "V5dZu6yik",
   "version": 16
 }
+
