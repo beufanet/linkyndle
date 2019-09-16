@@ -6,7 +6,6 @@ import sys
 import datetime
 import locale
 from dateutil.relativedelta import relativedelta
-from dateutil import tz
 from influxdb import InfluxDBClient
 import linky
 import json
@@ -55,12 +54,12 @@ def _getStartDate(today, daysNumber):
 # Get the midnight timestamp for startDate
 def _getStartTS(daysNumber):
     date = (datetime.datetime.now().replace(hour=0,minute=0,second=0,microsecond=0) - relativedelta(days=daysNumber))
-    return date.astimezone(tz.tzutc()).timestamp()
+    return date.timestamp()
 
 # Get the timestamp for calculating if we are in HP / HC
 def _getDateTS(y,mo,d,h,m):
     date = (datetime.datetime(year=y,month=mo,day=d,hour=h,minute=m,second=1,microsecond=0))
-    return date.astimezone(tz.tzutc()).timestamp()
+    return date.timestamp()
 
 # Get startDate with influxDB lastdate +1
 def _getStartDateInfluxDb(client):
@@ -110,7 +109,7 @@ if __name__ == "__main__":
     # Calculate start/endDate and firstTS for data to request/parse
     if args.last:
         startDate = _getStartDateInfluxDb(client)
-        firstTS =  datetime.datetime.strptime(startDate, '%d/%m/%Y').astimezone(tz.tzutc()).timestamp()
+        firstTS =  datetime.datetime.strptime(startDate, '%d/%m/%Y').timestamp()
     else :
         startDate = _getStartDate(datetime.date.today(), args.days)
         firstTS =  _getStartTS(args.days)
@@ -153,8 +152,11 @@ if __name__ == "__main__":
                     else:
                         pleines = 1
                 # Warning if ordre = 30min, then kWh should be divided by 2 !
-            logging.info(("found value ordre({0:3d}) : {1:7.2f} kWh at {2} (HC:{3}/HP:{4}/HN:{5})").format(d['ordre'], (d['valeur']/2), t.astimezone(tz.tzutc()).strftime('%Y-%m-%dT%H:%M:%SZ'),creuses,pleines,normales))
-            jsonInflux.append({
+            logging.info(("found value ordre({0:3d}) : {1:7.2f} kWh at {2} (HC:{3}/HP:{4}/HN:{5})").format(d['ordre'], (d['valeur']/2), t.strftime('%Y-%m-%dT%H:%M:%SZ'),creuses,pleines,normales))
+            if d['valeur'] < 0 :
+                logging.error(("found negative value {0}, do not push it !").format(d['valeur']))
+            else:
+                jsonInflux.append({
                            "measurement": "conso_elec",
                            "tags": {
                                "fetch_date" : endDate,
@@ -162,7 +164,7 @@ if __name__ == "__main__":
                                "heures_pleines" : pleines,
                                "heures_normales" : normales,
                            },
-                           "time": t.astimezone(tz.tzutc()).strftime('%Y-%m-%dT%H:%M:%SZ'),
+                           "time": t.strftime('%Y-%m-%dT%H:%M:%SZ'),
                            "fields": {
                                "value": (d['valeur']*1000)/2,
                                "max": resEnedis['graphe']['puissanceSouscrite']*1000,
