@@ -50,7 +50,7 @@ Create d
 
 Example : 5 years (1825d)
 ```
-> ALTER RETENTION POLICY "autogen" ON "linky" DURATION 1825d SHARD DURATION 30m DEFAULT
+> ALTER RETENTION POLICY "autogen" ON "linky" DURATION 1825d SHARD DURATION 7d DEFAULT
 ```
 
 #### DataPoints Format
@@ -161,5 +161,5 @@ When it works, just put in a crontab to fetch last day (d=1) value (change `$USE
 
 ```
 # cat /etc/crontab | grep linky
-00 6    * * *   $USER    cd /hime/$USER//linkyndle &&  python3 linkynflux.py -d 1
+00 6    * * *   $USER    cd /home/$USER//linkyndle &&  python3 linkynflux.py -d 1
 ```
