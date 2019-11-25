@@ -140,7 +140,6 @@ if __name__ == "__main__":
         # Use the formula to create timestamp, 1 ordre = 30min
             tres = firstTS + ((d['ordre']-1) *30*60)
             t = datetime.datetime.fromtimestamp(tres)
-            t = default_tzinfo(t, tz.tzlocal()) 
             creuses = 0
             pleines = 0
             normales = 0
