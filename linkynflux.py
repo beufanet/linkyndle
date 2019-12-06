@@ -115,8 +115,8 @@ if __name__ == "__main__":
         firstTS =  _getStartTS(args.days)
 
     endDate = _dayToStr(datetime.date.today())
-    if startDate >= endDate:
-      logging.error("No data available as Begin date is not before End date ");
+    if startDate <= endDate:
+      logging.error("No data available as startDate (%s) is not before endDate (%s)",str(startDate),str(endDate));
       sys.exit(1)
 
     # Try to get data from Enedis API
