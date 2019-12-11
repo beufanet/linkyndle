@@ -115,7 +115,8 @@ if __name__ == "__main__":
         firstTS =  _getStartTS(args.days)
 
     endDate = _dayToStr(datetime.date.today())
-    if startDate <= endDate:
+    endTS = datetime.datetime.strptime(endDate, '%d/%m/%Y').timestamp()
+    if firstTS >= endTS:
       logging.error("No data available as startDate (%s) is not before endDate (%s)",str(startDate),str(endDate));
       sys.exit(1)
 
