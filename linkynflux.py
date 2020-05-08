@@ -58,13 +58,11 @@ def _getStartTS(daysNumber):
 
 # Get the timestamp for calculating if we are in HP / HC
 def _getDateTS(y,mo,d,h,m):
-    date = (datetime.datetime(year=y,month=mo,day=d,hour=h,minute=m,second=1,microsecond=0))
+    date = (datetime.datetime(year=y,month=mo,day=d,hour=h,minute=m,second=0,microsecond=0))
     return date.timestamp()
 
 # Get startDate with influxDB lastdate +1
 def _getStartDateInfluxDb(client):
-    #client = InfluxDBClient(host='localhost', port=8086, username=_db_user , password=_db_passwd )
-    #client.switch_database(_db_name)
     db = client.query('SELECT "value" FROM "conso_elec" ORDER by time DESC LIMIT 1')
     for item in db.get_points():
         dateinfluxdb = item['time']
