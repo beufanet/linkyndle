@@ -80,6 +80,7 @@ Copy .params.example to .params and fill with your own values :
 
 - `enedis` : username and password for API Enedis
 - `influx` : your InfluxDB database
+  - `ssl` : move parameters to false if you don't enabled ssl on influxdb
 - `hc` :
   - if you have "heures creuses/heures pleines", fill start & end hours, so values will be tag with hc = 1 during this timewindow on InfluxDB datapoints
   - leave empty as `[]` if you don't have 'heures creuses' / 'heures pleines'
