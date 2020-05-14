@@ -151,7 +151,9 @@ if __name__ == "__main__":
                     if (startTS <= tres) and (endTS >= tres):
                         logging.debug("Found HC, set flag for DT : ", t.strftime('%Y-%m-%dT%H:%M:%SZ'))
                         creuses = 1
+                        pleines = 0
                     else:
+                        creuses = 0
                         pleines = 1
                 # Warning if ordre = 30min, then kWh should be divided by 2 !
             logging.info(("found value ordre({0:3d}) : {1:7.2f} kWh at {2} (HC:{3}/HP:{4}/HN:{5})").format(d['ordre'], (d['valeur']/2), t.strftime('%Y-%m-%dT%H:%M:%SZ'),creuses,pleines,normales))
