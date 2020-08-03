@@ -1,5 +1,7 @@
 # linkynflux
 
+> :warning: **This project / code is broken and does not work anymore **: ENEDIS changed their API and I've no time anymore for now to redevelop a new solution as a moral person required. I've postpone development until ENEDIS open again their API to customers. see [Related Bugs](https://github.com/beufanet/linkyndle/issues/28)
+
 ## Externals / Thanks
 
 The excellent job done by [outadoc](https://github.com/outadoc/) on project [linkindle available on Github](https://github.com/outadoc/linkindle). I used the linky module to avoid re-do the great job done.
